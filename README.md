@@ -30,15 +30,15 @@ Aplikasi **Learning Story App** dikembangkan untuk membantu pelajar dan mahasisw
 
 ## 📸 Tampilan Aplikasi
 ### Beranda
-![Beranda](public/images/screenshots/002.png)
+![Screenshot 2025-06-11 182306](https://github.com/user-attachments/assets/1689ac7e-027c-45e9-8417-fea0ae99b588)
 
 ### Bookmark Laporan
-![Bookmark](public/images/screenshots/005.png)
+![Screenshot 2025-06-11 182742](https://github.com/user-attachments/assets/8cdb1911-d696-4ed3-b28f-07c1aeaa09ba)
 
 ### Tambah Story
-![Peta](public/images/screenshots/004.png)
+![Screenshot 2025-06-11 182804](https://github.com/user-attachments/assets/1da98bd4-1f25-46bd-beaf-6c7c4cc047ec)
 
 ### Peta Lokasi
-![Peta](public/images/screenshots/003.png)
+![Screenshot 2025-06-11 182645](https://github.com/user-attachments/assets/6d22789f-623b-4ab8-86dc-f37c06135fa8)
 
 ---
