@@ -1,15 +1,11 @@
 import { showFormattedDate } from './utils';
 
 export function generateLoaderTemplate() {
-  return `
-    <div class="loader"></div>
-  `;
+  return `<div class="loader"></div>`;
 }
 
 export function generateLoaderAbsoluteTemplate() {
-  return `
-    <div class="loader loader-absolute"></div>
-  `;
+  return `<div class="loader loader-absolute"></div>`;
 }
 
 export function generateMainNavigationListTemplate() {
@@ -53,6 +49,15 @@ export function generateReportsListErrorTemplate(message) {
   `;
 }
 
+export function generateReportCommentItemTemplate(comment) {
+  return `
+    <div class="comment-item">
+      <p><strong>${comment.userName || 'Anonim'}:</strong></p>
+      <p>${comment.body}</p>
+    </div>
+  `;
+}
+
 export function generateReportDetailErrorTemplate(message) {
   return `
     <div id="reports-detail-error" class="reports-detail__error">
@@ -82,7 +87,7 @@ export function generateCommentsListErrorTemplate(message) {
 
 export function generateReportItemTemplate({
   id,
-  name, // Adjusted field name (from title to name)
+  name,
   description,
   photoUrl,
   lat,
@@ -92,15 +97,14 @@ export function generateReportItemTemplate({
 }) {
   return `
     <div tabindex="0" class="report-item" data-reportid="${id}">
-      <img class="report-item__image" src="${photoUrl}" alt="${description}"> <!-- Adjusted field name (from title to name) -->
+      <img class="report-item__image" src="${photoUrl}" alt="${description}">
       <div class="report-item__body">
         <div class="report-item__main">
-          
           <div class="report-item__more-info">
-          <div id="report-description" class="report-item__description">
-            <h3>${description}</h3>
-          </div>
-          <div class="report-item__createdat">
+            <div id="report-description" class="report-item__description">
+              <h3>${description}</h3>
+            </div>
+            <div class="report-item__createdat">
               <i class="fas fa-calendar-alt"></i> ${showFormattedDate(createdAt, 'id-ID')}
             </div>
             <div class="report-item__location">
@@ -122,7 +126,7 @@ export function generateReportItemTemplate({
 }
 
 export function generateReportDetailTemplate({
-  name, // Adjusted field name (from title to name)
+  name,
   description,
   lat,
   lon,
@@ -134,11 +138,7 @@ export function generateReportDetailTemplate({
   const imagesHtml = generateReportDetailImageTemplate(photoUrl, reporterName);
 
   return `
-    <div class="report-detail__header">
-      
-
-    </div>
-
+    <div class="report-detail__header"></div>
     <div class="container">
       <div class="report-detail__images__container">
         <div id="images" class="report-detail__images">${imagesHtml}</div>
@@ -147,29 +147,30 @@ export function generateReportDetailTemplate({
 
     <div class="container">
       <div class="report-detail__body">
-       <div class="report-detail__more-info" >
-    <div class="report-detail__more-info__inline" >
-      <div id="createdat" class="report-detail__createdat" data-value="${createdAtFormatted}" >
-        <i class="fas fa-calendar-alt" ></i><br>
-      </div>
-      <div id="location-latitude" class="report-detail__location__latitude" >
-        Latitude: ${lat}
-      </div>
-      <div id="location-longitude" class="report-detail__location__longitude"  >
-        Longitude: ${lon}
-      </div>
-    </div>
-    <div id="author" class="report-detail__author">
-      Di Posting oleh:${reporterName}
-    </div>
-  </div>
-</div>
+        <div class="report-detail__more-info">
+          <div class="report-detail__more-info__inline">
+            <div id="createdat" class="report-detail__createdat" data-value="${createdAtFormatted}">
+              <i class="fas fa-calendar-alt"></i><br>
+            </div>
+            <div id="location-latitude" class="report-detail__location__latitude">
+              Latitude: ${lat}
+            </div>
+            <div id="location-longitude" class="report-detail__location__longitude">
+              Longitude: ${lon}
+            </div>
+          </div>
+          <div id="author" class="report-detail__author">
+            Di Posting oleh:${reporterName}
+          </div>
+        </div>
+
         <div class="report-detail__body__description__container">
           <h2 class="report-detail__description__title">Informasi Lengkap</h2>
           <div id="description" class="report-detail__description__body">
             ${description}
           </div>
         </div>
+
         <div class="report-detail__body__map__container">
           <h2 class="report-detail__map__title">Peta Lokasi</h2>
           <div class="report-detail__map__container">
@@ -177,9 +178,9 @@ export function generateReportDetailTemplate({
             <div id="map-loading-container"></div>
           </div>
         </div>
-  
+
         <hr>
-  
+
         <div class="report-detail__body__actions__container">
           <h2>Aksi</h2>
           <div class="report-detail__actions__buttons">
@@ -198,14 +199,9 @@ export function generateReportDetailTemplate({
 
 export function generateReportDetailImageTemplate(imageUrl = null, alt = '') {
   if (!imageUrl) {
-    return `
-      <img class="report-detail__image" src="images/placeholder-image.jpg" alt="Placeholder Image">
-    `;
+    return `<img class="report-detail__image" src="images/placeholder-image.jpg" alt="Placeholder Image">`;
   }
-
-  return `
-    <img class="report-detail__image" src="${imageUrl}" alt="${alt}">
-  `;
+  return `<img class="report-detail__image" src="${imageUrl}" alt="${alt}">`;
 }
 
 export function generateSaveReportButtonTemplate() {
@@ -220,6 +216,22 @@ export function generateRemoveReportButtonTemplate() {
   return `
     <button id="report-detail-remove" class="btn btn-transparent">
       Buang laporan <i class="fas fa-bookmark"></i>
+    </button>
+  `;
+}
+
+export function generateSubscribeButtonTemplate() {
+  return `
+    <button id="subscribe-button" class="btn subscribe-button">
+      Subscribe <i class="fas fa-bell"></i>
+    </button>
+  `;
+}
+
+export function generateUnsubscribeButtonTemplate() {
+  return `
+    <button id="unsubscribe-button" class="btn unsubscribe-button">
+      Unsubscribe <i class="fas fa-bell-slash"></i>
     </button>
   `;
 }

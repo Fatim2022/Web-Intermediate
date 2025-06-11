@@ -188,38 +188,72 @@ export default class NewPage {
   }
       
 
-  async initialMap() {
-    if (this.#map) {
-      this.#map.remove();  // Menghapus peta yang sudah ada sebelumnya
-      this.#map = null;     // Set peta ke null agar bisa diinisialisasi ulang
-    }
-  
-    const mapElement = document.getElementById('map');
-    if (mapElement) {
-      this.#map = L.map(mapElement).setView([-7.7956, 110.3695], 13);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
-      }).addTo(this.#map);
-  
-      // Menambahkan event listener untuk klik pada peta
-      this.#map.on('click', (event) => {
-        const lat = event.latlng.lat;
-        const lng = event.latlng.lng;
-  
-        // Mengupdate input form dengan koordinat yang diklik
-        this.#form.elements.namedItem('lat').value = lat;
-        this.#form.elements.namedItem('lon').value = lng;
-  
-        // Optional: Menambahkan marker pada peta di lokasi yang diklik
-        if (this.#marker) {
-          this.#map.removeLayer(this.#marker); // Menghapus marker sebelumnya jika ada
-        }
-  
-        // Menambahkan marker baru
-        this.#marker = L.marker([lat, lng]).addTo(this.#map);
-      });
-    }
+async initialMap() {
+  if (this.#map) {
+    this.#map.remove();  // Menghapus peta yang sudah ada sebelumnya
+    this.#map = null;     // Set peta ke null agar bisa diinisialisasi ulang
   }
+
+  const mapElement = document.getElementById('map');
+  if (mapElement) {
+    // Base layers
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+    });
+
+    const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors, Tiles style by HOT',
+    });
+
+    const openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data: &copy; OpenStreetMap contributors, style: OpenTopoMap',
+    });
+
+    // Inisialisasi peta
+    this.#map = L.map(mapElement, {
+      center: [-7.7956, 110.3695],
+      zoom: 13,
+      layers: [osm], // Set default base layer
+    });
+
+    // Overlay: Marker dummy awal (akan diperbarui saat klik)
+    const initialMarker = L.marker([-7.7956, 110.3695]).bindPopup('Klik peta untuk mengatur lokasi');
+    const overlayMarkers = L.layerGroup([initialMarker]).addTo(this.#map);
+    this.#marker = initialMarker; // simpan untuk update nanti
+
+    // Layer Control
+    const baseMaps = {
+      'OSM Standar': osm,
+      'OSM HOT': osmHOT,
+      'OpenTopoMap': openTopoMap,
+    };
+
+    const overlayMaps = {
+      'Penanda Lokasi': overlayMarkers,
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(this.#map);
+
+    // Event klik pada peta
+    this.#map.on('click', (event) => {
+      const lat = event.latlng.lat;
+      const lng = event.latlng.lng;
+
+      this.#form.elements.namedItem('lat').value = lat;
+      this.#form.elements.namedItem('lon').value = lng;
+
+      // Perbarui marker
+      if (this.#marker) {
+        this.#map.removeLayer(this.#marker);
+      }
+
+      this.#marker = L.marker([lat, lng]).addTo(this.#map).bindPopup('Lokasi dipilih').openPopup();
+      overlayMarkers.clearLayers();
+      overlayMarkers.addLayer(this.#marker);
+    });
+  }
+}
+
   
   
 

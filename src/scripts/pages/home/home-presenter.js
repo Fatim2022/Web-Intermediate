@@ -23,9 +23,9 @@ export default class HomePresenter {
     try {
       await this.showReportsListMap();
 
-      console.log('Fetching all stories...');
-const response = await this.#model.getAllStories();
-console.log('Response:', response);
+    console.log('Fetching all stories...');
+    const response = await this.#model.getAllStories();
+    console.log('Response:', response);
 
 
       if (!response.ok) {
